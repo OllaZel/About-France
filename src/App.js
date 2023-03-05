@@ -1,23 +1,52 @@
-import logo from './logo.svg';
 import './App.css';
+import { data } from './data';
+import { useState } from 'react';
 
 function App() {
+
+  const [place, setPlace] = useState(0);
+  const {id, image, title, describe} = data[place];
+
+  const [showMore, setShowMore] = useState(false);
+
+  const Next = () => {
+    setPlace(place => {
+      place ++;
+      if (place > data.length-1) 
+      {
+        place = 0
+      }
+      return place
+    })}
+
+    const Previous = () => {
+      setPlace(place => {
+        place --;
+        if (place<0) {
+          return data.length-1
+        }
+        return place;
+      })
+    }
+
+    const btnText = showMore ? "Скрыть" : "Подробнее";
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <div className='container'>
+      <h1>7 самых красивых небольших городков во Франции</h1>
+      </div>
+      <div key={id} className='container'>
+      <h2>{id} - {title}</h2>
+      <img src={image} width="500px" height="300px" alt="foto"/>
+      <p> {showMore ? describe : describe.substring(0,100) + "..."}
+      <button className='btnShow' onClick={() => setShowMore(!showMore)}>{btnText}</button></p>
+      </div>
+
+    <div className='containerTwo'>
+      <button className='btn' onClick={Previous}>Предыдущий</button>
+      <button className='btn' onClick={Next}>Следующий</button>
+    </div>
+
     </div>
   );
 }
